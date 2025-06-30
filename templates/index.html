@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CGPA Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Dark Mode Toggle Button (Icon Only) -->
+    <button id="themeToggle" class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+
+    <h2>CGPA Calculator (University of Ibadan)</h2>
+
+    <form method="post">
+        <label>Name: </label>
+        <input type="text" name="student_name" required><br>
+
+        <label>Level: </label>
+        <input type="number" name="student_level" required><br>
+
+        <label>Session: </label>
+        <input type="text" name="current_session" required><br><br>
+
+        <h3>Courses</h3>
+        <div id="courses">
+            <div class="course">
+                <input type="text" name="course_title" placeholder="Course Title" required>
+                <input type="number" name="course_unit" placeholder="Course Unit" required>
+                <input type="number" name="course_score" placeholder="Score" required>
+            </div>
+        </div>
+
+        <button type="button" onclick="addCourse()">+ Add Another Course</button><br><br>
+        <button type="submit">Calculate CGPA</button>
+    </form>
+
+    <!-- Theme Toggle Script -->
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        // Load saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    </script>
+
+    <!-- Add Course Function -->
+    <script>
+        function addCourse() {
+            const div = document.createElement("div");
+            div.classList.add("course");
+            div.innerHTML = `
+                <input type="text" name="course_title" placeholder="Course Title" required>
+                <input type="number" name="course_unit" placeholder="Course Unit" required>
+                <input type="number" name="course_score" placeholder="Score" required>
+            `;
+            document.getElementById("courses").appendChild(div);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CGPA Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Dark Mode Toggle -->
+    <button id="themeToggle" class="theme-toggle" title="Toggle Dark Mode">🌙</button>
+
+    
+    <div id="resultSection">
+    <!-- All result info here -->
+     <h2>CGPA Result</h2>
+
+    <p><strong>Name:</strong> {{ name }}</p>
+    <p><strong>Level:</strong> {{ level }}</p>
+    <p><strong>Session:</strong> {{ session }}</p>
+
+    <h3>Courses Summary</h3>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Unit</th>
+                    <th>Score</th>
+                    <th>Grade Point</th>
+                    <th>Total Passed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in results %}
+                <tr>
+                    <td>{{ course.title }}</td>
+                    <td>{{ course.unit }}</td>
+                    <td>{{ course.score }}</td>
+                    <td>{{ course.grade_point }}</td>
+                    <td>{{ course.total_passed }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <p><strong>Total Units Registered:</strong> {{ total_unit }}</p>
+    <p><strong>Total Units Passed:</strong> {{ total_passed }}</p>
+    <p><strong>CGPA:</strong> {{ cgpa }}</p>
+    <p><strong>Classification:</strong> {{ remark }}</p>
+    
+</div>
+<button class="pdf-btn" onclick="downloadPDF()">📄 Download Result as PDF</button>
+
+
+
+    <!-- Dark Mode Toggle Script -->
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const body = document.body;
+
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            toggle.textContent = '☀️';
+        }
+
+        toggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            toggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    function downloadPDF() {
+        const resultSection = document.getElementById('resultSection') || document.body;
+        html2pdf().from(resultSection).save('cgpa_result.pdf');
+    }
+</script>
+
+</body>
+</html>
